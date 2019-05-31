@@ -23,17 +23,23 @@ http.createServer((req, res) => {
 			} else {
 				// 讀取檔案並回傳給 client 端
 				// 非同步寫法
-				let img = fs.readFileSync(file);
-				res.contentType = 'image/png';
-				res.contentLength = stats.size;
-				res.end(img, 'binary');
+				// let img = fs.readFileSync(file);
+				// res.contentType = 'image/png';
+				// res.contentLength = stats.size;
+				// res.end(img, 'binary');
 
-				// 同步寫法(不推薦，在 node 的網頁中使用同步是禁忌)
-				// fs.readFile(file, (err, data) => {
-				// 	res.contentType = 'image/png';
-				// 	res.contentLength = stat.size;
-				// 	res.end(data, 'binary');
-				// });
+				// 另個寫法，readFile 已改為異步				
+				fs.readFile(file, (err, data) => {
+					console.log(JSON.stringify(data));
+					// if (err) {
+					// 	throw err;
+					// 	console.log(err);
+					// }
+					// res.contentType = 'image/png';
+					// res.contentLength = stat.size;
+					// res.end(data, 'binary');
+				});
+
 			}
 		});
 	} else {
