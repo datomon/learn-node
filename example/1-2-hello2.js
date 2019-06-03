@@ -8,37 +8,36 @@ http.createServer((req, res) => {
 	if(name === undefined) name = 'World';
 
 	if(name === 'burningbird') {
-		let file = 'aaa.png';
+		let file = '../imgs/aaa.png';
 		
 		//stat 方法，會檢查檔案是否存在，並回傳檔案資訊的物件
 		fs.stat(file, (err, stats) => {
-			//fs.stat 官網介紹：https://nodejs.org/api/fs.html#fs_class_fs_stats
-			console.log(stats);  //檔案資訊的物件
-			console.log(stats.isDirectory());  //測試使用該物件的 isDirectory 方法
-
 			if (err) {
 				console.error(err);
 				res.writeHead(200, { 'Content-type': 'text/plain'});
 				res.end('Sorry, 目前找不到該張圖片');
 			} else {
+				//fs.stat 官網介紹：https://nodejs.org/api/fs.html#fs_class_fs_stats
+				console.log(stats);  //檔案資訊的物件
+				console.log(stats.isDirectory());  //測試使用該物件的 isDirectory 方法
+				
 				// 讀取檔案並回傳給 client 端
 				// 非同步寫法
-				// let img = fs.readFileSync(file);
-				// res.contentType = 'image/png';
-				// res.contentLength = stats.size;
-				// res.end(img, 'binary');
+				let img = fs.readFileSync(file);
+				res.contentType = 'image/png';
+				res.contentLength = stats.size;
+				res.end(img, 'binary');
 
 				// 另個寫法，readFile 已改為異步				
-				fs.readFile(file, (err, data) => {
-					console.log(JSON.stringify(data));
-					// if (err) {
-					// 	throw err;
-					// 	console.log(err);
-					// }
-					// res.contentType = 'image/png';
-					// res.contentLength = stat.size;
-					// res.end(data, 'binary');
-				});
+				// fs.readFile(file, (err, data) => {
+				// 	if (err) {
+				// 		throw err;
+				// 		console.log(err);
+				// 	}
+				// 	res.contentType = 'image/png';
+				// 	res.contentLength = stat.size;
+				// 	res.end(data, 'binary');
+				// });
 
 			}
 		});
