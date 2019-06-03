@@ -9,7 +9,8 @@ function InputChecker (name, file) {
     //https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
     //只要一實例化，就會馬上產生檔案
     this.writeStream = fs.createWriteStream(`./${file}.txt`, {
-        'flags': 'a',
+        'flags': 'a',  //加到原先內容的下一行，若無檔案則建立該檔
+        //flags參考：https://nodejs.org/api/fs.html#fs_file_system_flags
         'encoding': 'utf8',  //此為預設值
         'mode': 0o666  //此為預設值，8進位實字
         // 0o666 參考：http://2ality.com/2015/04/numbers-math-es6.html
@@ -68,5 +69,5 @@ process.stdin.setEncoding('utf8');
 //Node 監聽標準輸入的輸入(讀取)事件
 process.stdin.on('readable', () => {
     let input = process.stdin.read();  //開啟標準輸入
-    if (input !== null) ic.check(input);  //實例檢查輸入的字串，會發出什麼事件
+    if (input !== null) ic.check(input);  //實例用 check 方法檢查輸入的字串要發出什麼事件
 });
