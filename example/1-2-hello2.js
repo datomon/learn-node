@@ -22,22 +22,22 @@ http.createServer((req, res) => {
 				console.log(stats.isDirectory());  //測試使用該物件的 isDirectory 方法
 				
 				// 讀取檔案並回傳給 client 端
-				// 非同步寫法
-				let img = fs.readFileSync(file);
-				res.contentType = 'image/png';
-				res.contentLength = stats.size;
-				res.end(img, 'binary');
+				// 同步寫法，readFileSync
+				// let img = fs.readFileSync(file);
+				// res.contentType = 'image/png';
+				// res.contentLength = stats.size;
+				// res.end(img, 'binary');
 
-				// 另個寫法，readFile 已改為異步				
-				// fs.readFile(file, (err, data) => {
-				// 	if (err) {
-				// 		throw err;
-				// 		console.log(err);
-				// 	}
-				// 	res.contentType = 'image/png';
-				// 	res.contentLength = stat.size;
-				// 	res.end(data, 'binary');
-				// });
+				// 異步寫法，readFile (推薦使用)			
+				fs.readFile(file, (err, data) => {
+					if (err) {
+						throw err;
+						console.log(err);
+					}
+					res.contentType = 'image/png';
+					res.contentLength = stat.size;
+					res.end(data, 'binary');
+				});
 
 			}
 		});

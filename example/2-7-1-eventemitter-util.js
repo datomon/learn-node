@@ -1,4 +1,4 @@
-let util = require('util');
+let util = require('util');  //提供許多小功能的核心模組
 let eventEmitter = require('events').EventEmitter;
 let fs = require('fs');
 
@@ -7,7 +7,8 @@ function InputChecker (name, file) {
     this.name = name;
     //fs.createWriteStream 官方參考：
     //https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
-    //只要一實例化，就會馬上產生檔案
+    //流(Stream)的參考：http://www.runoob.com/nodejs/nodejs-stream.html
+    //只要一實例化，就會建立可寫流，並產生檔案
     this.writeStream = fs.createWriteStream(`./${file}.txt`, {
         'flags': 'a',  //加到原先內容的下一行，若無檔案則建立該檔
         //flags參考：https://nodejs.org/api/fs.html#fs_file_system_flags
@@ -40,13 +41,12 @@ InputChecker.prototype.check = function (input) {
     }
 }
 
-//產生實例，並開啟資料流
-let ic = new InputChecker('Alvin', 'output');
+let ic = new InputChecker('Alvin', 'output');  //產生實例
 
 // --- 實例監聽事件(繼承 EventEmitter 類別，所可以用 on 函式) ---
 ic.on('write', data => {
     console.log('write event');
-    //實例的資料流寫入資料，官方參考：
+    //實例的可寫流寫入資料，官方參考：
     //https://nodejs.org/api/fs.html#fs_class_fs_writestream
     //https://nodejs.org/api/stream.html#stream_writable_write_chunk_encoding_callback
     ic.writeStream.write(data);
